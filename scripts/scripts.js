@@ -10,7 +10,15 @@ import {
   loadSections,
   loadCSS,
   buildBlock,
+  getMetadata,
+  toClassName,
 } from './aem.js';
+
+/**
+ * Page templates in /templates/{name}/. A doc opts in with metadata
+ * `Template: {name}`. Listed here so unknown names never trigger 404s.
+ */
+const TEMPLATES = ['species'];
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
@@ -156,6 +164,24 @@ export function decorateMain(main) {
 }
 
 /**
+ * Loads the page template's CSS and JS (if any) and lets it reshape
+ * the content before regular decoration runs.
+ * @param {Element} main The main element
+ */
+async function loadTemplate(main) {
+  const template = toClassName(getMetadata('template'));
+  if (!TEMPLATES.includes(template)) return;
+  try {
+    const base = `${window.hlx.codeBasePath}/templates/${template}/${template}`;
+    const [mod] = await Promise.all([import(`${base}.js`), loadCSS(`${base}.css`)]);
+    if (mod.default) await mod.default(main);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(`failed to load template ${template}`, error);
+  }
+}
+
+/**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
@@ -164,6 +190,7 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
+    await loadTemplate(main);
     decorateMain(main);
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);

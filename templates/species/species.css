@@ -1,0 +1,44 @@
+/* applies to every page with  | Template | species |  in its metadata */
+
+body.species main .hero h1 {
+  text-shadow: 0 2px 8px rgb(0 0 0 / 50%);
+}
+
+body.species main .hero {
+  min-height: 360px;
+}
+
+body.species .species-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 32px;
+  margin: 24px 0;
+  padding: 16px 24px;
+  border-radius: 8px;
+  background-color: var(--light-color);
+}
+
+body.species .species-regulations {
+  margin: 0;
+}
+
+body.species .species-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+  margin: 0;
+  font-size: var(--body-font-size-xs);
+}
+
+body.species .species-facts dt {
+  font-weight: 600;
+}
+
+body.species .species-facts dd {
+  margin: 0;
+}
+
+body.species main .carousel-wrapper {
+  margin-top: 32px;
+}
