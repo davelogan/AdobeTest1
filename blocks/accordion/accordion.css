@@ -1,0 +1,51 @@
+.accordion details {
+  border: 1px solid var(--dark-color);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.accordion details summary {
+  position: relative;
+  padding: 16px 48px 16px 16px;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  background-color: var(--light-color);
+  transition: background-color 0.2s;
+}
+
+.accordion details summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion details summary:hover {
+  background-color: #eee;
+}
+
+/* chevron */
+.accordion details summary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  width: 8px;
+  height: 8px;
+  border: solid currentcolor;
+  border-width: 2px 2px 0 0;
+  transform: translateY(-75%) rotate(135deg);
+  transition: transform 0.2s;
+}
+
+.accordion details[open] summary::after {
+  transform: translateY(-25%) rotate(-45deg);
+}
+
+.accordion details summary > p {
+  display: inline;
+  margin: 0;
+}
+
+.accordion details .accordion-item-body {
+  padding: 0 16px;
+}
