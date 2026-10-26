@@ -20,6 +20,9 @@ function normalizePath(path) {
 }
 
 function buildHero(main) {
+  // author already added a Hero table: use it as-is
+  if (main.querySelector('div.hero')) return true;
+
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
   if (!h1 || !picture) return false;
@@ -109,10 +112,12 @@ async function addSpeciesInfo(target) {
  * @param {Element} main The main element
  */
 export default function decorate(main) {
-  const hasHero = buildHero(main);
+  buildHero(main);
 
-  // first section after the hero holds the fish info; facts go at its top.
-  // fetched without awaiting so it never delays the hero image (LCP).
-  const content = main.children[hasHero ? 1 : 0];
+  // first section with something besides the hero holds the fish info;
+  // facts go at its top. Fetched without awaiting so it never delays
+  // the hero image (LCP).
+  const content = [...main.children]
+    .find((section) => [...section.children].some((el) => !el.classList.contains('hero')));
   if (content) addSpeciesInfo(content);
 }
